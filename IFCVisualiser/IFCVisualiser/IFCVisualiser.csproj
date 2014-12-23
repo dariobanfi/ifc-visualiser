@@ -60,11 +60,58 @@
       <HintPath>C:\Users\Jana Pejic\AppData\Roaming\McNeel\Rhinoceros\5.0\Plug-ins\Grasshopper (b45a29b1-4343-4035-989e-044e8580d9cf)\0.9.76.0\GH_IO.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\AGraphMLCorner.cs" />
+    <Compile Include="Entities\AGraphMLEdge.cs" />
+    <Compile Include="Entities\AGraphMLGraph.cs" />
+    <Compile Include="Entities\AGraphMLNode.cs" />
     <Compile Include="IFCVisualiserComponent.cs" />
     <Compile Include="IFCVisualiserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\edges_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\file_analysis.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\file_filter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_analysis.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_filter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_graphml.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\graph_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\nodes_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\search_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\single_graphml.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
