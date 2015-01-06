@@ -16,7 +16,7 @@ namespace TestApi
 
         public static String BaseUrl = "http://data.ksd.ai.ar.tum.de:8080/";
         public static String Username = "dario.banfi@tum.de";
-        public static String Password = "testpassword";
+        public static String Password = "";
 
         public static String Ifc2XSersializer = "3276838";
         
