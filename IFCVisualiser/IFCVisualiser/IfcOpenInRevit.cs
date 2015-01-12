@@ -3,19 +3,20 @@ using System.Collections.Generic;
 
 using Grasshopper.Kernel;
 using System.Drawing;
+using System.Windows.Forms;
 using IFCVisualiser.Entities;
 
 namespace IFCVisualiser
 {
-    public class IFCVisualiserComponent : GH_Component
+    public class IfcPicker : GH_Component
     {
 
         // ##########################################################################################################################
-        private const string sName = "IFCVisualiser";
-        private const string sAbbreviation = "ASpi";
-        private const string sDescription = "Construct an Archimedean, or arithmetic, spiral given its radii and number of turns.";
-        private const string sCategory = "Curve";
-        private const string sSubCategory = "Primitive";
+        private const string sName = "IFCPicker";
+        private const string sAbbreviation = "IfcPicker";
+        private const string sDescription = "Shows the name of a list of IFC Project URIs and lets the user pick one";
+        private const string sCategory = "KsdIFC";
+        private const string sSubCategory = "IFC Tools";
         // ##########################################################################################################################
 
         /// <summary>
@@ -25,9 +26,26 @@ namespace IFCVisualiser
         /// Subcategory the panel. If you use non-existing tab or panel names, 
         /// new tabs/panels will automatically be created.
         /// </summary>
-        public IFCVisualiserComponent() : base(sName, sAbbreviation, sDescription, sCategory, sSubCategory)
+        public IfcPicker() : base(sName, sAbbreviation, sDescription, sCategory, sSubCategory)
         {
         }
+
+
+        // Overrides the default menu of grasshopper (useful)
+        public override bool AppendMenuItems(ToolStripDropDown menu)
+        {
+            Menu_AppendItem(menu, "First item");
+            Menu_AppendItem(menu, "Second item");
+            Menu_AppendItem(menu, "Third item");
+            Menu_AppendSeparator(menu);
+            Menu_AppendItem(menu, "Fourth item");
+            Menu_AppendItem(menu, "Fifth item");
+            Menu_AppendItem(menu, "Sixth item");
+
+            // Return true, otherwise the menu won't be shown.
+            return true;
+        }
+
 
         /// <summary>
         /// Registers all the input parameters for this component.
@@ -41,7 +59,7 @@ namespace IFCVisualiser
             // The first three arguments are always NAME, NICKNAME, and DESCRIPTION.
 
             // Input is the XML-File as String
-            pManager.AddTextParameter("AGraphML-String", "AGraphML", "ArchitecturalGraphML-String", GH_ParamAccess.item);
+            pManager.AddTextParameter("IFc-File", "Ifc", "IndustryFoundationClass-String", GH_ParamAccess.item);
 
             // If you want to change properties of certain parameters, 
             // you can use the pManager instance to access them by index:
@@ -55,7 +73,7 @@ namespace IFCVisualiser
         {
             // Use the pManager object to register your output parameters.
             // Output parameters do not have default values, but they too must have the correct access type.
-            pManager.AddTextParameter("Result", "R", "String saying Success or Failure", GH_ParamAccess.item);
+            pManager.AddTextParameter("Result", "R", "Structure to be piped in an Object", GH_ParamAccess.item);
 
             // Sometimes you want to hide a specific parameter from the Rhino preview.
             // You can use the HideParameter() method as a quick way:
@@ -73,6 +91,7 @@ namespace IFCVisualiser
 
             AGraphMLGraph graph = new AGraphMLGraph();
             graph.createFromString(file);
+
 
             // set return data
             DA.SetDataList(0, "Success");

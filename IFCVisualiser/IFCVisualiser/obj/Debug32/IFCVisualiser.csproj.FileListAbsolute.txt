@@ -1,0 +1,9 @@
+C:\Users\ambi\Desktop\ifc-visualiser\IFCVisualiser\IFCVisualiser\bin\IFCVisualiser.dll
+C:\Users\ambi\Desktop\ifc-visualiser\IFCVisualiser\IFCVisualiser\bin\IFCVisualiser.pdb
+C:\Users\ambi\Desktop\ifc-visualiser\IFCVisualiser\IFCVisualiser\bin\Newtonsoft.Json.dll
+C:\Users\ambi\Desktop\ifc-visualiser\IFCVisualiser\IFCVisualiser\bin\Newtonsoft.Json.xml
+C:\Users\ambi\Desktop\ifc-visualiser\IFCVisualiser\IFCVisualiser\obj\Debug32\IFCVisualiser.csprojResolveAssemblyReference.cache
+C:\Users\ambi\Desktop\ifc-visualiser\IFCVisualiser\IFCVisualiser\obj\Debug32\IFCVisualiser.Properties.Resources.resources
+C:\Users\ambi\Desktop\ifc-visualiser\IFCVisualiser\IFCVisualiser\obj\Debug32\IFCVisualiser.csproj.GenerateResource.Cache
+C:\Users\ambi\Desktop\ifc-visualiser\IFCVisualiser\IFCVisualiser\obj\Debug32\IFCVisualiser.dll
+C:\Users\ambi\Desktop\ifc-visualiser\IFCVisualiser\IFCVisualiser\obj\Debug32\IFCVisualiser.pdb
