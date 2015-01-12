@@ -8,13 +8,13 @@ using IFCVisualiser.Entities;
 
 namespace IFCVisualiser
 {
-    public class IfcPicker : GH_Component
+    public class IfcPreview : GH_Component
     {
 
         // ##########################################################################################################################
-        private const string sName = "IFCPicker";
-        private const string sAbbreviation = "IfcPicker";
-        private const string sDescription = "Shows the name of a list of IFC Project URIs and lets the user pick one";
+        private const string sName = "IfcPreview";
+        private const string sAbbreviation = "IfcPreview";
+        private const string sDescription = "Shows a preview of the IFC model when double clicked";
         private const string sCategory = "KsdIFC";
         private const string sSubCategory = "IFC Tools";
         // ##########################################################################################################################
@@ -26,7 +26,8 @@ namespace IFCVisualiser
         /// Subcategory the panel. If you use non-existing tab or panel names, 
         /// new tabs/panels will automatically be created.
         /// </summary>
-        public IfcPicker() : base(sName, sAbbreviation, sDescription, sCategory, sSubCategory)
+        public IfcPreview()
+            : base(sName, sAbbreviation, sDescription, sCategory, sSubCategory)
         {
         }
 
@@ -73,7 +74,7 @@ namespace IFCVisualiser
         {
             // Use the pManager object to register your output parameters.
             // Output parameters do not have default values, but they too must have the correct access type.
-            pManager.AddTextParameter("Result", "R", "Structure to be piped in an Object", GH_ParamAccess.item);
+            //pManager.AddTextParameter("Result", "R", "Structure to be piped in an Object", GH_ParamAccess.item);
 
             // Sometimes you want to hide a specific parameter from the Rhino preview.
             // You can use the HideParameter() method as a quick way:
@@ -118,7 +119,7 @@ namespace IFCVisualiser
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("{46c2ddc1-9c78-47c7-b67b-3e2a5302cf92}"); }
+            get { return new Guid("{fcd36a5d-44a4-4cef-87a9-aba31ff24f7d}"); }
         }
     }
 }

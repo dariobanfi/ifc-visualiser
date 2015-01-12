@@ -8,13 +8,13 @@ using IFCVisualiser.Entities;
 
 namespace IFCVisualiser
 {
-    public class IfcPicker : GH_Component
+    public class IfcOpenInRevit : GH_Component
     {
 
         // ##########################################################################################################################
-        private const string sName = "IFCPicker";
-        private const string sAbbreviation = "IfcPicker";
-        private const string sDescription = "Shows the name of a list of IFC Project URIs and lets the user pick one";
+        private const string sName = "IfcOpenInRevit";
+        private const string sAbbreviation = "IfcOpenInRevit";
+        private const string sDescription = "Open the file in Autocad Revit on double click";
         private const string sCategory = "KsdIFC";
         private const string sSubCategory = "IFC Tools";
         // ##########################################################################################################################
@@ -26,7 +26,8 @@ namespace IFCVisualiser
         /// Subcategory the panel. If you use non-existing tab or panel names, 
         /// new tabs/panels will automatically be created.
         /// </summary>
-        public IfcPicker() : base(sName, sAbbreviation, sDescription, sCategory, sSubCategory)
+        public IfcOpenInRevit()
+            : base(sName, sAbbreviation, sDescription, sCategory, sSubCategory)
         {
         }
 
@@ -59,7 +60,11 @@ namespace IFCVisualiser
             // The first three arguments are always NAME, NICKNAME, and DESCRIPTION.
 
             // Input is the XML-File as String
-            pManager.AddTextParameter("IFc-File", "Ifc", "IndustryFoundationClass-String", GH_ParamAccess.item);
+            //
+
+            pManager.AddTextParameter("IFc-File", "I", "The IFC file", GH_ParamAccess.item);
+
+            pManager.AddTextParameter("RevitPath", "R", "Path of the Revit executable (in case Revit uses a non standard path)", GH_ParamAccess.item);
 
             // If you want to change properties of certain parameters, 
             // you can use the pManager instance to access them by index:
@@ -73,7 +78,7 @@ namespace IFCVisualiser
         {
             // Use the pManager object to register your output parameters.
             // Output parameters do not have default values, but they too must have the correct access type.
-            pManager.AddTextParameter("Result", "R", "Structure to be piped in an Object", GH_ParamAccess.item);
+            //pManager.AddTextParameter("Result", "R", "Structure to be piped in an Object", GH_ParamAccess.item);
 
             // Sometimes you want to hide a specific parameter from the Rhino preview.
             // You can use the HideParameter() method as a quick way:
@@ -118,7 +123,7 @@ namespace IFCVisualiser
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("{46c2ddc1-9c78-47c7-b67b-3e2a5302cf92}"); }
+            get { return new Guid("{6ff5fc5b-af59-41a1-84f7-31575a241cfe}"); }
         }
     }
 }

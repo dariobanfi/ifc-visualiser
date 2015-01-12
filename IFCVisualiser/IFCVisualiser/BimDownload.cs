@@ -12,11 +12,11 @@ namespace IFCVisualiser
     {
 
         // ##########################################################################################################################
-        private const string sName = "IFCPicker";
-        private const string sAbbreviation = "IfcPicker";
-        private const string sDescription = "Shows the name of a list of IFC Project URIs and lets the user pick one";
+        private const string sName = "BimDownload";
+        private const string sAbbreviation = "BimDownload";
+        private const string sDescription = "Takes a BIM Server URI (and an optional user, password) and returns a string of the ifc file";
         private const string sCategory = "KsdIFC";
-        private const string sSubCategory = "IFC Tools";
+        private const string sSubCategory = "BIM Tools";
         // ##########################################################################################################################
 
         /// <summary>
@@ -26,7 +26,8 @@ namespace IFCVisualiser
         /// Subcategory the panel. If you use non-existing tab or panel names, 
         /// new tabs/panels will automatically be created.
         /// </summary>
-        public IfcPicker() : base(sName, sAbbreviation, sDescription, sCategory, sSubCategory)
+        public BimDownload()
+            : base(sName, sAbbreviation, sDescription, sCategory, sSubCategory)
         {
         }
 
@@ -59,7 +60,10 @@ namespace IFCVisualiser
             // The first three arguments are always NAME, NICKNAME, and DESCRIPTION.
 
             // Input is the XML-File as String
-            pManager.AddTextParameter("IFc-File", "Ifc", "IndustryFoundationClass-String", GH_ParamAccess.item);
+            pManager.AddTextParameter("URI", "@", "Address of the BIM model", GH_ParamAccess.item);
+            pManager.AddTextParameter("Username", "U", "Username to log in the server", GH_ParamAccess.item);
+            pManager.AddTextParameter("Password", "P", "Password to log in the server", GH_ParamAccess.item);
+            pManager.AddTextParameter("Serializer", "S", "Serializer to get the model", GH_ParamAccess.item);
 
             // If you want to change properties of certain parameters, 
             // you can use the pManager instance to access them by index:
@@ -73,7 +77,7 @@ namespace IFCVisualiser
         {
             // Use the pManager object to register your output parameters.
             // Output parameters do not have default values, but they too must have the correct access type.
-            pManager.AddTextParameter("Result", "R", "Structure to be piped in an Object", GH_ParamAccess.item);
+            pManager.AddTextParameter("IfcFile", "I", "Ifc file data", GH_ParamAccess.item);
 
             // Sometimes you want to hide a specific parameter from the Rhino preview.
             // You can use the HideParameter() method as a quick way:
@@ -118,7 +122,7 @@ namespace IFCVisualiser
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("{46c2ddc1-9c78-47c7-b67b-3e2a5302cf92}"); }
+            get { return new Guid("{3af4fbd3-4108-4d9c-9bed-6653cd05f46a}"); }
         }
     }
 }

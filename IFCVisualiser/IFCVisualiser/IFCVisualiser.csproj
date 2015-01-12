@@ -71,6 +71,9 @@
     <Compile Include="Entities\AGraphMLEdge.cs" />
     <Compile Include="Entities\AGraphMLGraph.cs" />
     <Compile Include="Entities\AGraphMLNode.cs" />
+    <Compile Include="BimDownload.cs" />
+    <Compile Include="IfcPreview.cs" />
+    <Compile Include="IfcOpenInRevit.cs" />
     <Compile Include="IfcPicker.cs" />
     <Compile Include="IFCVisualiserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

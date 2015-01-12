@@ -1,11 +1,7 @@
 ﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -36,7 +32,7 @@ namespace TestApi
             rq.request.parameters.username = Username;
             rq.request.parameters.password = Password;
 
-            var requestPayload = JsonConvert.SerializeObject(rq, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var requestPayload = JsonConvert.SerializeObject(rq, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
@@ -76,7 +72,7 @@ namespace TestApi
             rq.request.method = "getProjectByPoid";
             rq.request.parameters.poid = poid.ToString();
 
-            var requestPayload = JsonConvert.SerializeObject(rq, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var requestPayload = JsonConvert.SerializeObject(rq, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
@@ -121,7 +117,7 @@ namespace TestApi
             rq.request.parameters.showOwn = "false";
             rq.request.parameters.sync = "false";
 
-            var requestPayload = JsonConvert.SerializeObject(rq, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var requestPayload = JsonConvert.SerializeObject(rq, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
@@ -157,7 +153,7 @@ namespace TestApi
             rq.request.@interface = "Bimsie1ServiceInterface";
             rq.request.parameters.actionId = code;
 
-            var requestPayload = JsonConvert.SerializeObject(rq, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var requestPayload = JsonConvert.SerializeObject(rq, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
@@ -174,7 +170,7 @@ namespace TestApi
                     dynamic resp = JObject.Parse(jsonResult);
                     string jsonResponse = resp.response.result.file;
                     
-                    using (System.IO.StreamWriter file = new System.IO.StreamWriter("downloadedIfc.ifc"))
+                    using (StreamWriter file = new StreamWriter("downloadedIfc.ifc"))
                     {
                         var bytes = Convert.FromBase64String(jsonResponse);
                         string ifcDecoded = Encoding.UTF8.GetString(bytes);
