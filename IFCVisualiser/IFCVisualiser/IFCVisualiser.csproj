@@ -67,6 +67,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BimSerializer.cs" />
     <Compile Include="Entities\AGraphMLCorner.cs" />
     <Compile Include="Entities\AGraphMLEdge.cs" />
     <Compile Include="Entities\AGraphMLGraph.cs" />
