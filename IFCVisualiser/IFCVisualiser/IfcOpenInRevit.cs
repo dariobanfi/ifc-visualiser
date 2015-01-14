@@ -2,12 +2,50 @@
 using System.Collections.Generic;
 
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Attributes;
+using Grasshopper.GUI;
+using Grasshopper.GUI.Canvas;
 using System.Drawing;
 using System.Windows.Forms;
 using IFCVisualiser.Entities;
+using Autodesk.Revit.UI;
+using Autodesk.Revit.DB;
 
 namespace IFCVisualiser
 {
+    class IfcOpenInRevitDoubleClick : GH_ComponentAttributes, IExternalCommand
+    {
+        public IfcOpenInRevitDoubleClick(IfcOpenInRevit owner) : base(owner) { }
+
+        public override GH_ObjectResponse RespondToMouseDoubleClick(GH_Canvas sender, GH_CanvasMouseEvent e)
+        {
+            if (ContentBox.Contains(e.CanvasLocation))
+            {
+                IfcOpenInRevit component = Owner as IfcOpenInRevit;
+                System.Diagnostics.Debug.Write("double click called\n");
+
+                // Force the re-culculation of the component
+                component.ExpireSolution(true);
+                return GH_ObjectResponse.Handled;
+            }
+            return GH_ObjectResponse.Ignore;
+        }
+
+        public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
+        {
+            try
+            {
+                UIDocument doc = commandData.Application.OpenAndActivateDocument(@"C:\New Folder\rac_basic_sample_project.rvt");
+            }
+            catch (Exception e)
+            {
+                return Result.Failed;
+            }
+            return Result.Succeeded;
+        }
+    }
+
+
     public class IfcOpenInRevit : GH_Component
     {
 
@@ -47,6 +85,10 @@ namespace IFCVisualiser
             return true;
         }
 
+        public override void CreateAttributes()
+        {
+            m_attributes = new IfcOpenInRevitDoubleClick(this);
+        }
 
         /// <summary>
         /// Registers all the input parameters for this component.
@@ -62,9 +104,9 @@ namespace IFCVisualiser
             // Input is the XML-File as String
             //
 
-            pManager.AddTextParameter("IFc-File", "I", "The IFC file", GH_ParamAccess.item);
+            pManager.AddTextParameter("IFC-File", "I", "The IFC file", GH_ParamAccess.item);
 
-            pManager.AddTextParameter("RevitPath", "R", "Path of the Revit executable (in case Revit uses a non standard path)", GH_ParamAccess.item);
+            pManager.AddTextParameter("RevitPath", "R", "Path of the Revit executable (in case Revit uses a non-standard path)", GH_ParamAccess.item);
 
             // If you want to change properties of certain parameters, 
             // you can use the pManager instance to access them by index:
