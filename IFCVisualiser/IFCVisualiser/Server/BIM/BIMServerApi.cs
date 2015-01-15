@@ -172,13 +172,17 @@ namespace IFCVisualiser.Server.BIM
                     var jsonResult = streamReader.ReadToEnd();
                     dynamic resp = JObject.Parse(jsonResult);
                     string jsonResponse = resp.response.result.file;
-                    
-                    using (StreamWriter file = new StreamWriter("downloadedIfc.ifc"))
+
+
+                    var fileName = Path.Combine(Environment.GetFolderPath(
+                        Environment.SpecialFolder.ApplicationData), "downloadedIFC.ifc");
+
+                    using (StreamWriter file = new StreamWriter(fileName))
                     {
                         var bytes = Convert.FromBase64String(jsonResponse);
                         string ifcDecoded = Encoding.UTF8.GetString(bytes);
                         file.Write(ifcDecoded);
-                        return Path.GetFullPath("downloadedIfc.ifc");
+                        return fileName;
                     }
                 }
             }

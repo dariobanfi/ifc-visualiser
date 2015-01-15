@@ -106,9 +106,9 @@ namespace IFCVisualiser
 
             try
             {
-                var Url = new Uri(uri);
-                var Poid = HttpUtility.ParseQueryString(Url.Query).Get("poid");
-                if (Poid == null)
+                var url = new Uri(uri);
+                var poid = HttpUtility.ParseQueryString(url.Query).Get("poid");
+                if (poid == null)
                 {
                     AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Poid parameter not found in the URL");
                     return;
@@ -118,21 +118,15 @@ namespace IFCVisualiser
                 BimServer.Username = username;
                 BimServer.Password = password;
                 var client = new BimServer();
-                var filePath = client.Download(Poid);
-                MessageBox.Show(filePath);
-
-
-
+                var filePath = client.Download(poid);
+                // Set return data
+                DA.SetDataList(0, filePath);
             }
             catch (UriFormatException e)
             {
                 MessageBox.Show(e.Message + "\n" + e.TargetSite + "\n" + e.StackTrace);
-                this.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
-                return;
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
             }
-
-            // Set return data
-            DA.SetDataList(0, "filePath");
         }
 
         /// <summary>
@@ -145,7 +139,7 @@ namespace IFCVisualiser
             {
                 // You can add image files to your project resources and access them like this:
                 //return Resources.IconForThisComponent;
-                return IFCVisualiser.Properties.Resources.single_graphml;
+                return Properties.Resources.BimDownload;
             }
         }
 
