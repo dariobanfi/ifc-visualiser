@@ -1,4 +1,4 @@
-﻿namespace TestApi
+﻿namespace IFCVisualiser.Server.Model
 {
     public class BimResponse
     {

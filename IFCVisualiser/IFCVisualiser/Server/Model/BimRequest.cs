@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TestApi
+namespace IFCVisualiser.Server.Model
 {
 
     public class BimRequest

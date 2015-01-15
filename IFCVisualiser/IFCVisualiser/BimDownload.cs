@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 using Grasshopper.Kernel;
 using System.Drawing;
+using System.Web;
 using System.Windows.Forms;
 using IFCVisualiser.Entities;
+using IFCVisualiser.Server.BIM;
 
 namespace IFCVisualiser
 {
@@ -65,9 +67,9 @@ namespace IFCVisualiser
             pManager.AddTextParameter("Password", "P", "Password to log in the server", GH_ParamAccess.item);
             pManager.AddTextParameter("Serializer", "S", "Serializer to get the model", GH_ParamAccess.item);
 
-            // If you want to change properties of certain parameters, 
-            // you can use the pManager instance to access them by index:
-            //pManager[0].Optional = true;
+            pManager[1].Optional = true;
+            pManager[2].Optional = true;
+            pManager[3].Optional = true;
         }
 
         /// <summary>
@@ -89,13 +91,53 @@ namespace IFCVisualiser
         /// </summary>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            // get attribute "filepath"
-            String file = "";
-            DA.GetData<String>(0, ref file);
+            String uri = "";
 
-            AGraphMLGraph graph = new AGraphMLGraph();
-            graph.createFromString(file);
+            // Default values
+            String password = BimServer.Password;
+            String username = BimServer.Username;
+            String serializer = BimServer.Ifc2XSersializer;
 
+            DA.GetData<String>(0, ref uri);
+            DA.GetData(1, ref username);
+            DA.GetData(2, ref password);
+            DA.GetData(3, ref serializer);
+
+
+            try
+            {
+                var Url = new Uri(uri);
+                var Poid = HttpUtility.ParseQueryString(Url.Query).Get("poid");
+                if (Poid == null)
+                {
+                    AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Poid parameter not found in the URL");
+                    return;
+                }
+                
+                BimServer.Ifc2XSersializer = serializer;
+                BimServer.Username = username;
+                BimServer.Password = password;
+                var client = new BimServer();
+                try
+                {
+                    var filePath = client.Download(Poid);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message + "\n" + e.TargetSite + "\n" + e.StackTrace);
+                    return;
+                }
+                
+
+            }
+            catch (UriFormatException e)
+            {
+                this.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+                return;
+            }
+
+
+            
 
             // set return data
             DA.SetDataList(0, "Success");

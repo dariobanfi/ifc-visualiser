@@ -2,10 +2,12 @@
 using System.IO;
 using System.Net;
 using System.Text;
+using IFCVisualiser.Server.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Exception = System.Exception;
 
-namespace TestApi
+namespace IFCVisualiser.Server.BIM
 {
     class BimServer
     {
@@ -49,7 +51,7 @@ namespace TestApi
                     var result = JsonConvert.DeserializeObject<BimResponse>(jsonResult);
                     if (result.response.exception != null)
                     {
-                        // TODO Ask for valid credentials
+                        throw new Exception("Invalid Credentials");
                     }
                     else
                     {
@@ -59,7 +61,7 @@ namespace TestApi
             }
         }
 
-        private String LatestRoidRequest(int poid)
+        private String LatestRoidRequest(String poid)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(BaseUrl + "json/getProjectByPoid");
             httpWebRequest.ContentType = "application/json";
@@ -70,7 +72,7 @@ namespace TestApi
             rq.token = _token;
             rq.request.@interface = "Bimsie1ServiceInterface";
             rq.request.method = "getProjectByPoid";
-            rq.request.parameters.poid = poid.ToString();
+            rq.request.parameters.poid = poid;
 
             var requestPayload = JsonConvert.SerializeObject(rq, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
@@ -91,7 +93,7 @@ namespace TestApi
                     {
                         return stuff.response.result.lastRevisionId;
                     }
-                    catch (Exception)
+                    catch (System.Exception)
                     {
                     }
 
@@ -183,7 +185,7 @@ namespace TestApi
         }
 
 
-        public void Download(int id)
+        public String Download(String id)
         {
             if (_token == null)
                 Login();
@@ -191,9 +193,7 @@ namespace TestApi
             var roid = LatestRoidRequest(id);
             var opcode = DownloadRequest(roid, Ifc2XSersializer);
             var filePath = getData(opcode);
-
-
-
+            return filePath;
         }
     }
 }
