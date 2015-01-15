@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Windows.Forms;
 using IFCVisualiser.Server.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -177,9 +178,8 @@ namespace IFCVisualiser.Server.BIM
                         var bytes = Convert.FromBase64String(jsonResponse);
                         string ifcDecoded = Encoding.UTF8.GetString(bytes);
                         file.Write(ifcDecoded);
-
+                        return Path.GetFullPath("downloadedIfc.ifc");
                     }
-                    return null;
                 }
             }
         }

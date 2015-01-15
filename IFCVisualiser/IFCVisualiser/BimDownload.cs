@@ -79,7 +79,7 @@ namespace IFCVisualiser
         {
             // Use the pManager object to register your output parameters.
             // Output parameters do not have default values, but they too must have the correct access type.
-            pManager.AddTextParameter("IfcFile", "I", "Ifc file data", GH_ParamAccess.item);
+            pManager.AddTextParameter("IfcFile", "I", "Path of the downloaded IFC file", GH_ParamAccess.item);
 
             // Sometimes you want to hide a specific parameter from the Rhino preview.
             // You can use the HideParameter() method as a quick way:
@@ -118,29 +118,21 @@ namespace IFCVisualiser
                 BimServer.Username = username;
                 BimServer.Password = password;
                 var client = new BimServer();
-                try
-                {
-                    var filePath = client.Download(Poid);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message + "\n" + e.TargetSite + "\n" + e.StackTrace);
-                    return;
-                }
-                
+                var filePath = client.Download(Poid);
+                MessageBox.Show(filePath);
+
+
 
             }
             catch (UriFormatException e)
             {
+                MessageBox.Show(e.Message + "\n" + e.TargetSite + "\n" + e.StackTrace);
                 this.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
                 return;
             }
 
-
-            
-
-            // set return data
-            DA.SetDataList(0, "Success");
+            // Set return data
+            DA.SetDataList(0, "filePath");
         }
 
         /// <summary>

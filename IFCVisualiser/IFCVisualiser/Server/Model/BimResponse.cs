@@ -10,13 +10,13 @@
     {
         public string result { get; set; }
         public int lastRevisionId { get; set; }
-        public Exception exception { get; set; }
+        public BimException exception { get; set; }
         public string name { get; set; }
 
     }
 
 
-    public class Exception : System.Exception
+    public class BimException
     {
         public string __type { get; set; }
         public string message { get; set; }
