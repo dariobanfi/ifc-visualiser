@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using Grasshopper.Kernel;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Xml.Serialization.Configuration;
 using IFCVisualiser.Entities;
+using IFCVisualiser.Server.Model;
 
 namespace IFCVisualiser
 {
@@ -12,13 +14,16 @@ namespace IFCVisualiser
     {
 
         // ##########################################################################################################################
-        private const string sName = "BimSerializer";
-        private const string sAbbreviation = "BimSerializer";
-        private const string sDescription = "List of possible serializer values";
-        private const string sCategory = "KsdIFC";
-        private const string sSubCategory = "BIM Tools";
+        private const string SName = "BimSerializer";
+        private const string SAbbreviation = "BimSerializer";
+        private const string SDescription = "List of possible serializer values";
+        private const string SCategory = "KsdIFC";
+        private const string SSubCategory = "BIM Tools";
         // ##########################################################################################################################
 
+
+        private String _chosenSerializer = "Ifc2x3";
+        
         /// <summary>
         /// Each implementation of GH_Component must provide a public 
         /// constructor without any arguments.
@@ -27,78 +32,60 @@ namespace IFCVisualiser
         /// new tabs/panels will automatically be created.
         /// </summary>
         public BimSerializer()
-            : base(sName, sAbbreviation, sDescription, sCategory, sSubCategory)
+            : base(SName, SAbbreviation, SDescription, SCategory, SSubCategory)
         {
         }
 
 
-        // Overrides the default menu of grasshopper (useful)
         public override bool AppendMenuItems(ToolStripDropDown menu)
         {
-            Menu_AppendItem(menu, "First item");
-            Menu_AppendItem(menu, "Second item");
-            Menu_AppendItem(menu, "Third item");
-            Menu_AppendSeparator(menu);
-            Menu_AppendItem(menu, "Fourth item");
-            Menu_AppendItem(menu, "Fifth item");
-            Menu_AppendItem(menu, "Sixth item");
+            foreach (var serializer in Serializers.SerializerList)
+            {
+                Menu_AppendItem(menu, serializer.Key, Menu_MyCustomItemClicked);
+            }
+           
 
             // Return true, otherwise the menu won't be shown.
             return true;
         }
 
 
+        private void Menu_MyCustomItemClicked(Object sender, EventArgs e)
+        {
+
+            _chosenSerializer = ((ToolStripMenuItem)sender).ToString(); ;
+            // Re-executes the component
+            this.CollectData();
+            this.ComputeData();
+            this.ExpireSolution(true);
+        }
+
         /// <summary>
         /// Registers all the input parameters for this component.
         /// </summary>
-        protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
+        protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            // Use the pManager object to register your input parameters.
-            // You can often supply default values when creating parameters.
-            // All parameters must have the correct access type. If you want 
-            // to import lists or trees of values, modify the ParamAccess flag.
-            // The first three arguments are always NAME, NICKNAME, and DESCRIPTION.
-
-            // Input is the XML-File as String
-            pManager.AddTextParameter("URI", "@", "Address of the BIM model", GH_ParamAccess.item);
-            pManager.AddTextParameter("Username", "U", "Username to log in the server", GH_ParamAccess.item);
-            pManager.AddTextParameter("Password", "P", "Password to log in the server", GH_ParamAccess.item);
-            pManager.AddTextParameter("Serializer", "S", "Serializer to get the model", GH_ParamAccess.item);
-
-            // If you want to change properties of certain parameters, 
-            // you can use the pManager instance to access them by index:
-            //pManager[0].Optional = true;
+            // No input parameters for this component
         }
 
         /// <summary>
         /// Registers all the output parameters for this component.
         /// </summary>
-        protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
+        protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
             // Use the pManager object to register your output parameters.
             // Output parameters do not have default values, but they too must have the correct access type.
-            pManager.AddTextParameter("IfcFile", "I", "Ifc file data", GH_ParamAccess.item);
-
-            // Sometimes you want to hide a specific parameter from the Rhino preview.
-            // You can use the HideParameter() method as a quick way:
-            //pManager.HideParameter(0);
+            pManager.AddTextParameter("Serializer", "Serializer", "Returns the serializer name", GH_ParamAccess.item);
         }
+
 
         /// <summary>
         /// This is the method that actually does the work.
         /// </summary>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            // get attribute "filepath"
-            String file = "";
-            DA.GetData<String>(0, ref file);
-
-            AGraphMLGraph graph = new AGraphMLGraph();
-            graph.createFromString(file);
-
-
             // set return data
-            DA.SetDataList(0, "Success");
+            DA.SetData(0, _chosenSerializer);
         }
 
         /// <summary>
@@ -109,17 +96,9 @@ namespace IFCVisualiser
         {
             get
             {
-                // You can add image files to your project resources and access them like this:
-                //return Resources.IconForThisComponent;
-                return IFCVisualiser.Properties.Resources.single_graphml;
+                return Properties.Resources.BimSerializer;
             }
         }
-
-        /// <summary>
-        /// Each component must have a unique Guid to identify it. 
-        /// It is vital this Guid doesn't change otherwise old ghx files 
-        /// that use the old ID will partially fail during loading.
-        /// </summary>
         public override Guid ComponentGuid
         {
             get { return new Guid("{00679ce6-6dd9-4004-b613-b3c0de2fde2e}"); }

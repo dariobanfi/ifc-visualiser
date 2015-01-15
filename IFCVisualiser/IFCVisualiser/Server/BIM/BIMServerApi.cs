@@ -15,9 +15,9 @@ namespace IFCVisualiser.Server.BIM
 
         public static String BaseUrl = "http://data.ksd.ai.ar.tum.de:8080/";
         public static String Username = "dario.banfi@tum.de";
-        public static String Password = "";
+        public static String Password = "testpassword";
 
-        public static String Ifc2XSersializer = "3276838";
+        public static String Ifc2XSersializer = "Ifc2x3";
         
         private String _token;
 
@@ -175,27 +175,37 @@ namespace IFCVisualiser.Server.BIM
 
 
                     var fileName = Path.Combine(Environment.GetFolderPath(
-                        Environment.SpecialFolder.ApplicationData), "downloadedIFC.ifc");
+                        Environment.SpecialFolder.ApplicationData), "downloadedIFC");
 
                     using (StreamWriter file = new StreamWriter(fileName))
                     {
-                        var bytes = Convert.FromBase64String(jsonResponse);
-                        string ifcDecoded = Encoding.UTF8.GetString(bytes);
-                        file.Write(ifcDecoded);
-                        return fileName;
+                        try
+                        {
+                            var bytes = Convert.FromBase64String(jsonResponse);
+                            string ifcDecoded = Encoding.UTF8.GetString(bytes);
+                            file.Write(ifcDecoded);
+                            return fileName;
+                        }
+                        catch (Exception e)
+                        {
+                            throw  new Exception("The request did not return data");
+                        }
+                        
+
                     }
                 }
             }
         }
 
 
-        public String Download(String id)
+        public String Download(String id, String serializerName)
         {
             if (_token == null)
                 Login();
 
+            var serializer = Serializers.GetSerializerId(serializerName);
             var roid = LatestRoidRequest(id);
-            var opcode = DownloadRequest(roid, Ifc2XSersializer);
+            var opcode = DownloadRequest(roid, serializer);
             var filePath = getData(opcode);
             return filePath;
         }

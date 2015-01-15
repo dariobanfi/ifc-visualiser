@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-
-using Grasshopper.Kernel;
 using System.Drawing;
 using System.Web;
 using System.Windows.Forms;
-using IFCVisualiser.Entities;
+using Grasshopper.Kernel;
+using IFCVisualiser.Properties;
 using IFCVisualiser.Server.BIM;
 
 namespace IFCVisualiser
@@ -14,11 +12,11 @@ namespace IFCVisualiser
     {
 
         // ##########################################################################################################################
-        private const string sName = "BimDownload";
-        private const string sAbbreviation = "BimDownload";
-        private const string sDescription = "Takes a BIM Server URI (and an optional user, password) and returns a string of the ifc file";
-        private const string sCategory = "KsdIFC";
-        private const string sSubCategory = "BIM Tools";
+        private const string SName = "BimDownload";
+        private const string SAbbreviation = "BimDownload";
+        private const string SDescription = "Takes a BIM Server URI (and an optional user, password) and returns a string of the ifc file";
+        private const string SCategory = "KsdIFC";
+        private const string SSubCategory = "BIM Tools";
         // ##########################################################################################################################
 
         /// <summary>
@@ -29,7 +27,7 @@ namespace IFCVisualiser
         /// new tabs/panels will automatically be created.
         /// </summary>
         public BimDownload()
-            : base(sName, sAbbreviation, sDescription, sCategory, sSubCategory)
+            : base(SName, SAbbreviation, SDescription, SCategory, SSubCategory)
         {
         }
 
@@ -53,7 +51,7 @@ namespace IFCVisualiser
         /// <summary>
         /// Registers all the input parameters for this component.
         /// </summary>
-        protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
+        protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             // Use the pManager object to register your input parameters.
             // You can often supply default values when creating parameters.
@@ -63,9 +61,9 @@ namespace IFCVisualiser
 
             // Input is the XML-File as String
             pManager.AddTextParameter("URI", "@", "Address of the BIM model", GH_ParamAccess.item);
-            pManager.AddTextParameter("Username", "U", "Username to log in the server", GH_ParamAccess.item);
-            pManager.AddTextParameter("Password", "P", "Password to log in the server", GH_ParamAccess.item);
-            pManager.AddTextParameter("Serializer", "S", "Serializer to get the model", GH_ParamAccess.item);
+            pManager.AddTextParameter("Username", "Username", "Username to log in the server", GH_ParamAccess.item);
+            pManager.AddTextParameter("Password", "Password", "Password to log in the server", GH_ParamAccess.item);
+            pManager.AddTextParameter("Serializer", "Serializer", "Serializer to get the model", GH_ParamAccess.item);
 
             pManager[1].Optional = true;
             pManager[2].Optional = true;
@@ -75,11 +73,11 @@ namespace IFCVisualiser
         /// <summary>
         /// Registers all the output parameters for this component.
         /// </summary>
-        protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
+        protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
             // Use the pManager object to register your output parameters.
             // Output parameters do not have default values, but they too must have the correct access type.
-            pManager.AddTextParameter("IfcFile", "I", "Path of the downloaded IFC file", GH_ParamAccess.item);
+            pManager.AddTextParameter("IfcFile", "FileLocation", "Path of the downloaded IFC file", GH_ParamAccess.item);
 
             // Sometimes you want to hide a specific parameter from the Rhino preview.
             // You can use the HideParameter() method as a quick way:
@@ -114,16 +112,20 @@ namespace IFCVisualiser
                     return;
                 }
                 
-                BimServer.Ifc2XSersializer = serializer;
                 BimServer.Username = username;
                 BimServer.Password = password;
                 var client = new BimServer();
-                var filePath = client.Download(poid);
+                if (String.IsNullOrEmpty(serializer))
+                {
+                    serializer = BimServer.Ifc2XSersializer;
+                }
+                var filePath = client.Download(poid, serializer);
                 // Set return data
-                DA.SetDataList(0, filePath);
+                DA.SetData(0, filePath);
             }
-            catch (UriFormatException e)
+            catch (Exception e)
             {
+                // TODO REMOVE WHEN FINISHED DEVELOPING
                 MessageBox.Show(e.Message + "\n" + e.TargetSite + "\n" + e.StackTrace);
                 AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
             }
@@ -139,7 +141,7 @@ namespace IFCVisualiser
             {
                 // You can add image files to your project resources and access them like this:
                 //return Resources.IconForThisComponent;
-                return Properties.Resources.BimDownload;
+                return Resources.BimDownload;
             }
         }
 
