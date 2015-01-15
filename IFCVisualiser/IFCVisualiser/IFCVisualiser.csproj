@@ -77,7 +77,9 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BimVisualiser.cs" />
     <Compile Include="BimSerializer.cs" />
+    <Compile Include="BimVisualizerAttributes.cs" />
     <Compile Include="Entities\AGraphMLCorner.cs" />
     <Compile Include="Entities\AGraphMLEdge.cs" />
     <Compile Include="Entities\AGraphMLGraph.cs" />
@@ -142,6 +144,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\BimSerializer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BimVisualiser.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

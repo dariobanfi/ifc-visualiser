@@ -83,6 +83,16 @@ namespace IFCVisualiser.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap BimVisualiser {
+            get {
+                object obj = ResourceManager.GetObject("BimVisualiser", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap edges_icon {
             get {
                 object obj = ResourceManager.GetObject("edges_icon", resourceCulture);
