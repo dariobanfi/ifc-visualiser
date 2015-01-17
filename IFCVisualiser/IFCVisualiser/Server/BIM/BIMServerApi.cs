@@ -10,7 +10,7 @@ using Exception = System.Exception;
 
 namespace IFCVisualiser.Server.BIM
 {
-    class BimServer
+    public class BimServer
     {
 
         public static String BaseUrl = "http://data.ksd.ai.ar.tum.de:8080/";
@@ -104,6 +104,50 @@ namespace IFCVisualiser.Server.BIM
             return null;
         }
 
+
+        public String ProjectNameRequest(string poid)
+        {
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(BaseUrl + "json/getProjectByPoid");
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Proxy = null;
+            httpWebRequest.Method = "POST";
+
+            var rq = new BimRequest();
+            rq.token = _token;
+            rq.request.@interface = "Bimsie1ServiceInterface";
+            rq.request.method = "getProjectByPoid";
+            rq.request.parameters.poid = poid.ToString();
+
+            var requestPayload = JsonConvert.SerializeObject(rq, Newtonsoft.Json.Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                string json = requestPayload;
+
+                streamWriter.Write(json);
+                streamWriter.Flush();
+                streamWriter.Close();
+
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var jsonResult = streamReader.ReadToEnd();
+                    dynamic stuff = JObject.Parse(jsonResult);
+                    try
+                    {
+                        return stuff.response.result.name;
+                    }
+                    catch (Exception)
+                    {
+                    }
+
+                }
+            }
+
+            return null;
+        }
+
+
         private String DownloadRequest(string roid, string serializerId)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(BaseUrl + "json/download");
@@ -186,7 +230,7 @@ namespace IFCVisualiser.Server.BIM
                             file.Write(ifcDecoded);
                             return fileName;
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             throw  new Exception("The request did not return data");
                         }
