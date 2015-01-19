@@ -42,6 +42,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BimPlus.LightCaseClient_obfuscated">
+      <HintPath>..\packages\BimPlus\BimPlus.LightCaseClient_obfuscated.dll</HintPath>
+    </Reference>
+    <Reference Include="BimPlus.Sdk.Data">
+      <HintPath>..\packages\BimPlus\BimPlus.Sdk.Data.dll</HintPath>
+    </Reference>
     <Reference Include="GH_IO">
       <HintPath>..\packages\GrassHopper\GH_IO.dll</HintPath>
     </Reference>
@@ -67,6 +73,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="RhinoCommon">
@@ -77,6 +84,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BimPlusDownload.cs" />
     <Compile Include="BimVisualiser.cs" />
     <Compile Include="BimSerializer.cs" />
     <Compile Include="BimVisualiserData.cs" />
@@ -96,13 +104,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Server\BIMplus\BIMPlusServer.cs" />
     <Compile Include="Server\Model\BimResponse.cs" />
     <Compile Include="Server\BIM\BIMServerApi.cs" />
     <Compile Include="Server\Model\BimRequest.cs" />
     <Compile Include="Server\Model\Serializers.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Server\BIM+\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -148,6 +154,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\BimVisualiser.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BimPlusDownload.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BimPlusDownload.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
