@@ -39,6 +39,7 @@ namespace IFCVisualiser
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return Result.Failed;
             }
             return Result.Succeeded;

@@ -102,7 +102,6 @@ namespace IFCVisualiser
                     _component.ExpirePreview(true);
                     _component.ExpireSolution(true);
                     return GH_ObjectResponse.Handled;
-                    break;
                 }
             }
             BimVisualiserData.Instance.Selected = -1;
